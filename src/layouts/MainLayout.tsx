@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 
 export default function MainLayout() {
   return (
-    <div>
+    <div className='overflow-hidden'>
       <Navbar />
       <div className="pt-16">
         <Outlet />
