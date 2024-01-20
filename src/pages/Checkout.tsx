@@ -16,7 +16,7 @@ export default function Checkout() {
   const delivaryCharge = 4.5;
 
   return (
-    <div className="flex justify-center items-stretch gap-10 text-primary mx-20">
+    <div className="flex justify-center items-stretch gap-10 text-primary mx-28">
       <div className="max-w-3xl w-full">
         <h1 className="mb-2">Delivery Information</h1>
         <div className="h-[60vh] border border-gray-300 rounded-md p-10 overflow-auto">

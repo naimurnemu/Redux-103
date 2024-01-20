@@ -18,9 +18,9 @@ export default function Navbar() {
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-6xl h-full mx-auto ">
-          <div>
+          <Link to="/">
             <img className="h-8" src={logo} alt="log" />
-          </div>
+          </Link>
           <div>
             <ul className="flex items-center">
               <li>
@@ -38,17 +38,17 @@ export default function Navbar() {
                   <Link to="/checkout">Checkout</Link>
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Button variant="ghost">
                   <HiOutlineSearch size="25" />
                 </Button>
-              </li>
+              </li> */}
               <li>
                 <Cart />
               </li>
               <li className="ml-5">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="outline-none">
+                  <DropdownMenuTrigger disabled className="outline-none">
                     <Avatar>
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>CN</AvatarFallback>
