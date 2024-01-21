@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Button } from '../components/ui/button';
 import { DropdownMenuSeparator } from '../components/ui/dropdown-menu';
@@ -9,11 +9,25 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '../components/ui/dropdown-menu';
-import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/technet-logo.png';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { signOut } from 'firebase/auth';
+import { firebaseAuth } from '@/lib/firebase';
+import { setUser } from '@/redux/features/user/userSlice';
 
 export default function Navbar() {
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    signOut(firebaseAuth).then(() => {
+      dispatch(setUser(null));
+      navigate('/login');
+    });
+  };
+
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
@@ -38,40 +52,56 @@ export default function Navbar() {
                   <Link to="/checkout">Checkout</Link>
                 </Button>
               </li>
-              {/* <li>
-                <Button variant="ghost">
-                  <HiOutlineSearch size="25" />
-                </Button>
-              </li> */}
               <li>
                 <Cart />
               </li>
-              <li className="ml-5">
-                <DropdownMenu>
-                  <DropdownMenuTrigger disabled className="outline-none">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Billing
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Team
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Subscription
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </li>
+              {user.email ? (
+                <li className="ml-5">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="outline-none">
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        onClick={() => handleLogout()}
+                        className="cursor-pointer"
+                      >
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
+              ) : (
+                <li>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="outline-none">
+                      <Avatar>
+                        <AvatarImage src="" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <Link to="/signup">
+                        <DropdownMenuLabel className="cursor-pointer">
+                          Sign Up
+                        </DropdownMenuLabel>
+                      </Link>
+                      <DropdownMenuSeparator />
+                      <Link to="/login">
+                        <DropdownMenuLabel className="cursor-pointer">
+                          Login
+                        </DropdownMenuLabel>
+                      </Link>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
+              )}
             </ul>
           </div>
         </div>

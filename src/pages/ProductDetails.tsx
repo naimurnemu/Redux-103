@@ -1,13 +1,13 @@
 import ProductReview from '@/components/ProductReview';
 import { Button } from '@/components/ui/button';
-import { useGetSingleProductQuery } from '@/redux/api/apiSlice';
+import { useGetSingleProductQuery } from '@/redux/features/product/productEndpoints';
 import { useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleProductQuery(id);
   const product = data;
-
+  console.log(isLoading);
   return (
     <>
       <div className="flex max-w-6xl mx-auto items-center border-b border-gray-300">
@@ -25,7 +25,7 @@ export default function ProductDetails() {
           <Button>Add to cart</Button>
         </div>
       </div>
-      <ProductReview />
+      <ProductReview id={product?.id} />
     </>
   );
 }
